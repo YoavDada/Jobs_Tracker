@@ -10,4 +10,5 @@ class JobApplication(db.Model):
     position = db.Column(db.String(100), nullable=False)
     in_progress = db.Column(db.Boolean, default=True)
     applied_date = db.Column(db.Date, nullable=False)
+    job_post_link = db.Column(db.String(300))
 

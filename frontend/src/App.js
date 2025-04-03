@@ -1,25 +1,58 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import JobForm from './components/JobForm';
+import JobList from './components/JobList';
+import { fetchJobs, addJob, deleteJob, updateJob } from './api/jobs';
 import './App.css';
 
 function App() {
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    fetchJobs().then(setJobs);
+  }, []);
+
+  const handleAddJob = async (jobData) => {
+    await addJob(jobData);
+    const updated = await fetchJobs();
+    setJobs(updated);
+  };
+
+  const handleEditJob = async (id, updatedData) => {
+    await updateJob(id, updatedData);
+    const updated = await fetchJobs();
+    setJobs(updated);
+  };
+  
+
+  const handleStatusChange = async (id, newStatus) => {
+    await updateJob(id, { in_progress: newStatus });
+    const refreshed = await fetchJobs();
+    setJobs(refreshed);
+  };
+
+  const handleDeleteJob = async (id) => {
+    await deleteJob(id);
+    const updated = await fetchJobs();
+    setJobs(updated);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="custom-background min-vh-100">
+      <div className="App">
+        <h1>Job Tracker</h1>
+        <div className="container transparent-container">
+          <JobForm onAdd={handleAddJob} />
+          <JobList
+            jobs={jobs}
+            onDelete={handleDeleteJob}
+            onStatusChange={handleStatusChange}
+            onEdit={handleEditJob}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
 export default App;
+

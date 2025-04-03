@@ -22,10 +22,11 @@ def add_job():
 
     try:
         new_job = JobApplication(
-            company=data['company'],
-            position=data['position'],
-            in_progress=data.get('status', True),
-            applied_date=datetime.strptime(data['applied_date'], '%Y-%m-%d').date()
+        company=data['company'],
+        position=data['position'],
+        in_progress=data.get('status', True),
+        applied_date=datetime.strptime(data['applied_date'], '%Y-%m-%d').date(),
+        job_post_link=data.get('job_post_link') 
         )
         db.session.add(new_job)
         db.session.commit()
@@ -46,7 +47,8 @@ def get_jobs():
                 ('company', job.company),
                 ('position', job.position),
                 ('in_progress', job.in_progress),
-                ('applied_date', job.applied_date.strftime('%Y-%m-%d'))
+                ('applied_date', job.applied_date.strftime('%Y-%m-%d')),
+                ('job_post_link', job.job_post_link)
             ]))
 
         return jsonify(job_list), 200
@@ -65,7 +67,8 @@ def get_job(job_id):
         'company': job.company,
         'position': job.position,
         'in_progress': job.in_progress,
-        'applied_date': job.applied_date.strftime('%Y-%m-%d')
+        'applied_date': job.applied_date.strftime('%Y-%m-%d'),
+        'job_post_link': job.job_post_link
     }), 200
 
     
@@ -94,6 +97,7 @@ def update_job(job_id):
         job.company = data.get('company', job.company)
         job.position = data.get('position', job.position)
         job.in_progress = data.get('in_progress', job.in_progress)
+        job.job_post_link = data.get('job_post_link', job.job_post_link) 
         
         if 'applied_date' in data:
             job.applied_date = datetime.strptime(data['applied_date'], '%Y-%m-%d').date()

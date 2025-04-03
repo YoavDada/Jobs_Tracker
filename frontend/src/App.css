@@ -13,6 +13,25 @@
   }
 }
 
+.custom-background {
+  min-height: 100vh;
+  background: linear-gradient(to right, #e0f7fa, #4773b2);
+  padding: 20px;
+}
+
+.transparent-container {
+  background-color: rgba(255, 255, 255, 0.00); /* white, 85% opacity */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.center-placeholder::placeholder {
+  text-align: center;
+  color: #999;
+  opacity: 0.6;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
